@@ -1,126 +1,117 @@
-# Automation Testing Framework (C# + Selenium)
+AutomationFramework
 
-This repository contains a modular and maintainable Selenium Automation Framework built using C#, NUnit/MSTest, Page Object Model (POM), JSON test data, and Extent Reports.
+This is a Selenium automation framework built with C#, NUnit, Selenium WebDriver, Page Object Model (POM), Extent Reports, and JSON test data.
 
-# Project Structure
+Project Structure
 AutomationFramework/
-│
-├── Pages/               
-├── Tests/               
-├── Utilities/           
-├── Drivers/             
-├── Reports/             
-├── TestData/            
-└── README.md            
+  Pages/
+  Tests/
+  Utilities/
+  Reports/
+  TestData/
+  Drivers/
+  README.md
 
-# Technologies Used
+Requirements
 
-C#
+Visual Studio 2022 or later
 
-Selenium WebDriver
+.NET 6 or .NET 7
 
-NUnit or MSTest
+Chrome browser
 
-ExtentReports
+ChromeDriver (auto loaded by Selenium)
 
-Newtonsoft.Json
-
-ChromeDriver
-
-# Features
-
-Page Object Model (POM)
-
-Centralized WebDriver setup
-
-Extent Report generation
-
-Screenshot capture on failure
-
-JSON-based test data
-
-Retry for flaky tests
-
-Category-wise execution
-
-Installation & Setup
-Clone the repository
-git clone https://github.com/your-repository-name.git
-
-Install required NuGet packages
+NuGet Packages to Install
 Selenium.WebDriver
 Selenium.Support
-ExtentReports
 Newtonsoft.Json
+ExtentReports
 NUnit
 NUnit3TestAdapter
-MSTest.TestFramework (if using MSTest)
-MSTest.TestAdapter
+Microsoft.NET.Test.Sdk
 
-Running Tests
-Using Visual Studio Test Explorer
+How to Run Tests
+Option 1: Visual Studio
 
-Open the solution
+Open the solution in Visual Studio
 
-Go to Test → Test Explorer
+Go to Test > Test Explorer
 
 Click Run All
 
-Using CLI
+Option 2: CLI
 dotnet test
 
-Category-based run (NUnit)
-dotnet test --filter TestCategory=Regression
+Run Only Regression Tests
+dotnet test --filter "Category=Regression"
 
-JSON Test Data Example
+How Test Data Works
 
-File: LoginData.json
+Example: LoginData.json
 
 {
   "validLogin": {
-    "username": "testuser",
-    "password": "password123"
+    "username": "standard_user",
+    "password": "secret_sauce"
   }
 }
 
 
-Usage:
+You load it like this:
 
 var data = ConfigReader.LoadJson("LoginData.json");
 string username = data["validLogin"]["username"].ToString();
 
-Extent Reports & Screenshots
+Reports and Screenshots
 
-Screenshots are stored in:
+After running tests, reports are generated inside:
 
-/Reports/Screenshots/
-
-
-To save screenshot:
-
-screenshot.GetScreenshot().SaveAsFile($"{path}.png");
+Reports/
+Reports/Screenshots/
 
 
-To attach:
+Screenshots are created inside the same report folder.
 
-test.AddScreenCaptureFromPath("screenshot.png");
+BaseTest Flow
+
+Open browser
+
+Open SauceDemo
+
+Run test
+
+Take screenshot
+
+Add screenshot to report
+
+Save report
+
+Close browser
 
 Sample Test
 [Test, Category("Regression"), Retry(2)]
 public void AddToCartAndCheckout()
 {
     var loginPage = new LoginPage(driver);
-    var homePage = new HomePage(driver);
-
-    loginPage.Login("username", "password");
-    homePage.AddItemToCart();
+    loginPage.Login("standard_user", "secret_sauce");
 }
 
-Contribution
+Troubleshooting
+Screenshots Not Appearing
 
-Pull requests are welcome.
-For major changes, please open an issue first.
+Make sure:
 
-License
+Folder Reports exists
 
-This project is free to use for automation learning and development.
+You are saving screenshot using a valid path
+
+You are using:
+
+screenshot.SaveAsFile(fullPath);
+
+Report Not Updating
+
+Make sure:
+
+extent.Flush();
