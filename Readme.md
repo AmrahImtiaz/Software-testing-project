@@ -1,246 +1,126 @@
-🚀 Selenium C# Automation Framework
+Automation Testing Framework (C# + Selenium)
 
-A modular, scalable automation testing framework built using:
+This repository contains a modular and maintainable Selenium Automation Framework built using C#, NUnit/MSTest, Page Object Model (POM), JSON test data, and Extent Reports.
 
-Selenium WebDriver (C#)
+Project Structure
+AutomationFramework/
+│
+├── Pages/               
+├── Tests/               
+├── Utilities/           
+├── Drivers/             
+├── Reports/             
+├── TestData/            
+└── README.md            
 
-NUnit
+Technologies Used
 
-Page Object Model (POM)
+C#
+
+Selenium WebDriver
+
+NUnit or MSTest
 
 ExtentReports
 
-NLog
+Newtonsoft.Json
 
-JSON-based Test Data
+ChromeDriver
 
-Reusable Utility Methods
+Features
 
-Target Test Website: https://www.saucedemo.com
+Page Object Model (POM)
 
-📁 Project Structure
-AutomationFramework/
-│
-├── Drivers/                     # (Optional) Browser drivers
-│
-├── Pages/                       # Page Object classes
-│     ├── LoginPage.cs
-│     ├── ProductsPage.cs
-│
-├── Tests/                       # Automated test cases
-│     ├── LoginTests.cs
-│     ├── CheckoutTests.cs
-│
-├── Utilities/                   # Helper utilities
-│     ├── BaseTest.cs
-│     ├── Logger.cs
-│     ├── ExtentManager.cs
-│     ├── ScreenshotHelper.cs
-│     ├── ConfigReader.cs
-│     ├── WaitHelper.cs
-│
-├── TestData/
-│     └── LoginData.json
-│
-├── Reports/                     # Auto-generated test reports & screenshots
-│     ├── TestReport.html
-│     ├── *.png
-│
-├── Logs/
-│     ├── logfile.log
-│
-└── README.md
+Centralized WebDriver setup
 
-🧱 Key Features
-✔️ Page Object Model (POM)
+Extent Report generation
 
-Modular page classes with:
+Screenshot capture on failure
 
-Locators
+JSON-based test data
 
-Actions
+Retry for flaky tests
 
-Assertions
+Category-wise execution
 
-✔️ Data-Driven Testing (JSON)
+Installation & Setup
+Clone the repository
+git clone https://github.com/your-repository-name.git
 
-Load test data from:
+Install required NuGet packages
+Selenium.WebDriver
+Selenium.Support
+ExtentReports
+Newtonsoft.Json
+NUnit
+NUnit3TestAdapter
+MSTest.TestFramework (if using MSTest)
+MSTest.TestAdapter
 
-/TestData/LoginData.json
+Running Tests
+Using Visual Studio Test Explorer
 
-✔️ HTML Reporting (ExtentReports)
+Open the solution
 
-Includes:
+Go to Test → Test Explorer
 
-Pass/Fail summary
+Click Run All
 
-Steps
+Using CLI
+dotnet test
 
-Screenshots
+Category-based run (NUnit)
+dotnet test --filter TestCategory=Regression
 
-Timestamps
+JSON Test Data Example
 
-Error description
+File: LoginData.json
 
-✔️ Automatic Screenshots
-
-Saved for all tests (pass/fail):
-
-/Reports/*.png
-
-✔️ Logging (NLog)
-
-Tracks:
-
-Test execution
-
-Errors
-
-Diagnostics
-
-Saved in:
-
-/Logs/logfile.log
-
-✔️ Reusable Utilities
-
-Includes:
-
-Waits
-
-Screenshots
-
-JSON reader
-
-Logging wrapper
-
-Extent report initializer
-
-🛠️ Prerequisites
-Install:
-Tool	Version
-.NET SDK	6+
-Visual Studio or JetBrains Rider	Latest
-Chrome Browser	Latest
-📦 Required NuGet Packages
-Package	Purpose
-Selenium.WebDriver	WebDriver API
-Selenium.WebDriver.ChromeDriver	Chrome automation
-NUnit	Test framework
-NUnit3TestAdapter	Enables Test Explorer
-Microsoft.NET.Test.Sdk	Required for execution
-AventStack.ExtentReports	HTML Reports
-NLog	Logging
-Newtonsoft.Json	JSON reader
-
-Run via Package Manager Console:
-
-Install-Package Selenium.WebDriver
-Install-Package Selenium.WebDriver.ChromeDriver
-Install-Package NUnit
-Install-Package NUnit3TestAdapter
-Install-Package Microsoft.NET.Test.Sdk
-Install-Package AventStack.ExtentReports
-Install-Package NLog
-Install-Package Newtonsoft.Json
-
-▶️ How to Run Tests
-1. Open the solution
-AutomationFramework.sln
-
-2. Build
-Ctrl + Shift + B
-
-3. Open Test Explorer
-Test → Test Explorer
-
-4. Run Tests
-
-Click:
-
-Run All
-
-
-Tests will open Chrome and execute automation steps.
-
-📊 Output & Reports
-📌 1. HTML Test Report
-
-Located in:
-
-/Reports/TestReport.html
-
-
-Open the file → View screenshots, status, logs, duration.
-
-📌 2. Screenshots
-
-Saved automatically:
-
-/Reports/*.png
-
-📌 3. Execution Logs
-
-Stored in:
-
-/Logs/logfile.log
-
-
-Contains:
-
-Info logs
-
-Errors
-
-Warnings
-
-Step-by-step tracking
-
-🧪 Creating a New Test
-
-Create a new test file:
-
-/Tests/MyNewTest.cs
-
-
-Example:
-
-[Test]
-public void VerifyUserCanLogin()
 {
-    var login = new LoginPage(driver);
-    login.Login("standard_user", "secret_sauce");
-
-    var products = new ProductsPage(driver);
-    Assert.IsTrue(products.IsProductsPageDisplayed());
+  "validLogin": {
+    "username": "testuser",
+    "password": "password123"
+  }
 }
 
-🌐 Adding a New Page (POM)
 
-Inside:
+Usage:
 
-/Pages/
+var data = ConfigReader.LoadJson("LoginData.json");
+string username = data["validLogin"]["username"].ToString();
+
+Extent Reports & Screenshots
+
+Screenshots are stored in:
+
+/Reports/Screenshots/
 
 
-Example:
+To save screenshot:
 
-public class LoginPage
+screenshot.GetScreenshot().SaveAsFile($"{path}.png");
+
+
+To attach:
+
+test.AddScreenCaptureFromPath("screenshot.png");
+
+Sample Test
+[Test, Category("Regression"), Retry(2)]
+public void AddToCartAndCheckout()
 {
-    private IWebDriver driver;
+    var loginPage = new LoginPage(driver);
+    var homePage = new HomePage(driver);
 
-    public LoginPage(IWebDriver driver)
-    {
-        this.driver = driver;
-    }
-
-    private IWebElement Username => driver.FindElement(By.Id("user-name"));
-    private IWebElement Password => driver.FindElement(By.Id("password"));
-    private IWebElement LoginBtn => driver.FindElement(By.Id("login-button"));
-
-    public void Login(string user, string pass)
-    {
-        Username.SendKeys(user);
-        Password.SendKeys(pass);
-        LoginBtn.Click();
-    }
+    loginPage.Login("username", "password");
+    homePage.AddItemToCart();
 }
+
+Contribution
+
+Pull requests are welcome.
+For major changes, please open an issue first.
+
+License
+
+This project is free to use for automation learning and development.
