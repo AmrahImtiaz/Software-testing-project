@@ -80,12 +80,4 @@ public void AddToCartAndCheckout()
     var loginPage = new LoginPage(driver);
     loginPage.Login("standard_user", "secret_sauce");
 }
-```
-
-## Troubleshooting
-
-### Screenshots Not Appearing
-Ensure folders exist and paths are correct.
-
-### Report Not Updating
-Ensure `extent.Flush();` is present in TearDown.
+``
