@@ -1,8 +1,8 @@
-Automation Testing Framework (C# + Selenium)
+# Automation Testing Framework (C# + Selenium)
 
 This repository contains a modular and maintainable Selenium Automation Framework built using C#, NUnit/MSTest, Page Object Model (POM), JSON test data, and Extent Reports.
 
-Project Structure
+# Project Structure
 AutomationFramework/
 │
 ├── Pages/               
@@ -13,7 +13,7 @@ AutomationFramework/
 ├── TestData/            
 └── README.md            
 
-Technologies Used
+# Technologies Used
 
 C#
 
@@ -27,7 +27,7 @@ Newtonsoft.Json
 
 ChromeDriver
 
-Features
+# Features
 
 Page Object Model (POM)
 
