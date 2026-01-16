@@ -1,8 +1,10 @@
-AutomationFramework
+# AutomationFramework
 
 This is a Selenium automation framework built with C#, NUnit, Selenium WebDriver, Page Object Model (POM), Extent Reports, and JSON test data.
 
-Project Structure
+## Project Structure
+
+```
 AutomationFramework/
   Pages/
   Tests/
@@ -11,18 +13,18 @@ AutomationFramework/
   TestData/
   Drivers/
   README.md
+```
 
-Requirements
+## Requirements
 
-Visual Studio 2022 or later
+1. Visual Studio 2022 or later  
+2. .NET 6 or .NET 7  
+3. Chrome browser  
+4. ChromeDriver (auto loaded by Selenium)
 
-.NET 6 or .NET 7
+## NuGet Packages to Install
 
-Chrome browser
-
-ChromeDriver (auto loaded by Selenium)
-
-NuGet Packages to Install
+```
 Selenium.WebDriver
 Selenium.Support
 Newtonsoft.Json
@@ -30,88 +32,60 @@ ExtentReports
 NUnit
 NUnit3TestAdapter
 Microsoft.NET.Test.Sdk
+```
 
-How to Run Tests
-Option 1: Visual Studio
+## How to Run Tests
 
-Open the solution in Visual Studio
+### Option 1: Visual Studio
+1. Open the solution in Visual Studio  
+2. Go to **Test > Test Explorer**  
+3. Click **Run All**
 
-Go to Test > Test Explorer
-
-Click Run All
-
-Option 2: CLI
+### Option 2: CLI
+```
 dotnet test
+```
 
-Run Only Regression Tests
+### Run Only Regression Tests
+```
 dotnet test --filter "Category=Regression"
+```
 
-How Test Data Works
+## Test Data Example
 
-Example: LoginData.json
-
+```
 {
   "validLogin": {
     "username": "standard_user",
     "password": "secret_sauce"
   }
 }
+```
 
+## Reports and Screenshots
 
-You load it like this:
+Reports and screenshots are generated inside:
 
-var data = ConfigReader.LoadJson("LoginData.json");
-string username = data["validLogin"]["username"].ToString();
-
-Reports and Screenshots
-
-After running tests, reports are generated inside:
-
+```
 Reports/
 Reports/Screenshots/
+```
 
+## Sample Test
 
-Screenshots are created inside the same report folder.
-
-BaseTest Flow
-
-Open browser
-
-Open SauceDemo
-
-Run test
-
-Take screenshot
-
-Add screenshot to report
-
-Save report
-
-Close browser
-
-Sample Test
+```
 [Test, Category("Regression"), Retry(2)]
 public void AddToCartAndCheckout()
 {
     var loginPage = new LoginPage(driver);
     loginPage.Login("standard_user", "secret_sauce");
 }
+```
 
-Troubleshooting
-Screenshots Not Appearing
+## Troubleshooting
 
-Make sure:
+### Screenshots Not Appearing
+Ensure folders exist and paths are correct.
 
-Folder Reports exists
-
-You are saving screenshot using a valid path
-
-You are using:
-
-screenshot.SaveAsFile(fullPath);
-
-Report Not Updating
-
-Make sure:
-
-extent.Flush();
+### Report Not Updating
+Ensure `extent.Flush();` is present in TearDown.
